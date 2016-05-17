@@ -6,7 +6,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-/* this one example is different from project"restprj",pay attention to set 
+/* the tutorial is on https://www.acando.no/thedailypassion/200555/a-rest-service-with-jetty-and-jersey
+ this one example is different from project"restprj",pay attention to set 
 the config.packages("HERE"). HERE should contain App.java and Resource.java.
 In the pom.xml, pay attention to the dependency,not to cause "jar hell" situation.
 *****10 May,2016********
