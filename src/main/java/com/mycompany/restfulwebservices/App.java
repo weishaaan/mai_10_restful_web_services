@@ -20,7 +20,7 @@ public class App {
         ServletHolder servlet = new ServletHolder(new ServletContainer(config));
 
 
-        Server server = new Server(2222);
+        Server server = new Server(3333);
         ServletContextHandler context = new ServletContextHandler(server, "/*");
         context.addServlet(servlet, "/*");
 
