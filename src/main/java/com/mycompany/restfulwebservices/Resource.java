@@ -1,7 +1,4 @@
 package com.mycompany.restfulwebservices;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,14 +33,14 @@ public class Resource {
     /* (1)if we input this website: http://localhost:2222/home/hello
        we will get "Hello, world!".
     
-    
+    */ 
     @GET
     @Path("hello")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.TEXT_PLAIN)
     public String helloWorld() {
        return "Hello, world!";
-     }    
-    */ 
+    }    
+    
     
     /*(2) if we input this website: http://localhost:2222/home/param?name=Me 
        we will get "Hello, Me".  
@@ -67,7 +64,8 @@ public class Resource {
     */
   
     MessageService messageService = new MessageService();
-    
+    Test_property r = new Test_property();  
+    /*
     @GET
     @Produces(MediaType.APPLICATION_XML) //MediaType.APPLICATION_XML
     public List<Message> getMessages(){
@@ -80,8 +78,7 @@ public class Resource {
     public Message getMessage(@PathParam("messageId") long messageId){
         return messageService.getMessage(messageId);
     }
-    
-    /*
+
     @POST
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
@@ -113,6 +110,18 @@ public class Resource {
     public Message delectMessage(@PathParam("messageId") long messageId){
         return messageService.removeMessage(messageId);
     }
+    
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doGetBat(){
+             
+        //r.createProperties();        
+        String filepath = r.readProperties();
+        //System.out.println(filepath);
+        String result = r.runBatFile(filepath);
+                        
+	return result + " ! it works!!! ";      
+   }
 }
     
     
