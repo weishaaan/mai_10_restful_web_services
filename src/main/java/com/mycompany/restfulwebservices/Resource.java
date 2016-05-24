@@ -76,17 +76,26 @@ public class Resource {
     
     @GET
     @Path("/{messageId}")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public Message getMessage(@PathParam("messageId") long messageId){
         return messageService.getMessage(messageId);
     }
     
+    /*
     @POST
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
     public List<Message> addMessage(Message message){
         messageService.addMessage(message);
         return messageService.getAllMessagges();
+    }
+    */
+    
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void create(final String a){
+        System.out.println("author = " + a);
+        //System.out.println("message = " + input.getMessage());
     }
     
     @PUT
