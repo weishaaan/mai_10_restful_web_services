@@ -35,18 +35,13 @@ public class Resource {
     MessageService messageService = new MessageService();   
     Test_property r = new Test_property();  
     
-    /* (1)if we input this website: http://localhost:2222/home/hello
-       we will get "Hello, world!".  
-    
+    /*
     @GET
     @Path("hello")
     @Produces(MediaType.TEXT_PLAIN)
     public String helloWorld() {
        return "Hello, world!";
     }    
-        
-    (2) if we input this website: http://localhost:2222/home/param?name=Me 
-       we will get "Hello, Me".  
     
     @GET
     @Path("param")
@@ -55,9 +50,6 @@ public class Resource {
         return "Hello, " + name;
     }
 
-    (3)There is another way to get values from the URI-path is to use the annotation @PathParam.
-        we input this website for this methode: http://localhost:2222/home/path/Me
-    
     @GET
     @Path("path/{var}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -78,14 +70,7 @@ public class Resource {
         return messageService.getMessage(messageId);
     }
 */
-    @POST
-    @Path="message"
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.APPLICATION_XML)
-    public List<Message> addMessage(Message message){
-        messageService.addMessage(message);
-        return messageService.getAllMessagges();
-    }   
+   
   /*  
     @PUT
     @Path("/{messageId}")
@@ -95,16 +80,18 @@ public class Resource {
         message.setId(messageId);
         return messageService.updateMessage(message);
     }
-    
+    */
     @DELETE
     @Path("/{messageId}")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public Message delectMessage(@PathParam("messageId") long messageId){
         return messageService.removeMessage(messageId);
     }
-    */
     
+
+    /***************************TEXT PLAIN**************************************/
     @GET
+    @Path("batch")
     @Produces(MediaType.TEXT_PLAIN)
     public String doGetBat(){            
         //r.createProperties();        
@@ -115,42 +102,66 @@ public class Resource {
    }
     
     @POST
+    @Path("a")
     @Consumes(MediaType.TEXT_PLAIN)
-    public void create(final String a){
-        System.out.println("author = " + a);
+    public Response create(String a){
+        System.out.println("time = " + a);
         //System.out.println("message = " + input.getMessage());
-    }
-
+        
+        String var = "26 mai,5:53pm"+a;      
+        return Response.ok().entity(var)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .allow("OPTIONS").build();
+    }  
 
     @GET
-    @Path("message")
-    @Produces(MediaType.APPLICATION_XML) //MediaType.APPLICATION_XML
-    public List<Message> getMessages(){
-        return messageService.getAllMessagges();
+    @Path("sin")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response hello() {
+        String var = "sin 26 mai";      
+        return Response.ok().entity(var)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .allow("OPTIONS").build();
+    }
+    
+    /*************************** JSON **************************************/
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMessageById(@PathParam("id") Long id)throws IOException{
+        Message messageById = messageService.getMessage(id);
+        return Response.ok() //200
+                .entity(messageById)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .allow("OPTIONS").build();
     }
     
     @GET
-    @Path("getTest")
-    @Produces(MediaType.TEXT_PLAIN) //MediaType.APPLICATION_XML
-    public String returnGetRequest(){
-        return "12345";
+    @Path("getMessage")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMessage() throws IOException{
+        return Response.ok() //200
+                .entity(messageService.getAllMessagges())
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .allow("OPTIONS").build();
     }
     
     @POST
-    @Path("postTest")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String returnPostRequest(String str){
-        return "$POST works, str is "+str;
+    @Path("postMessage")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postMessage(Message message) throws IOException{
+        messageService.addMessage(message);
+        return Response.ok() //200
+                .entity(messageService.getAllMessagges())
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .allow("OPTIONS").build();
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
     
     
