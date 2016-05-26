@@ -1,4 +1,5 @@
 package com.mycompany.restfulwebservices;
+import Model.Test_property;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,19 +31,21 @@ import static org.glassfish.jersey.server.model.Parameter.Source.PATH;
 @Path("home")
 
 public class Resource {
-    /* (1)if we input this website: http://localhost:2222/home/hello
-       we will get "Hello, world!".
     
-    */ 
+    MessageService messageService = new MessageService();   
+    Test_property r = new Test_property();  
+    
+    /* (1)if we input this website: http://localhost:2222/home/hello
+       we will get "Hello, world!".  
+    
     @GET
     @Path("hello")
     @Produces(MediaType.TEXT_PLAIN)
     public String helloWorld() {
        return "Hello, world!";
     }    
-    
-    
-    /*(2) if we input this website: http://localhost:2222/home/param?name=Me 
+        
+    (2) if we input this website: http://localhost:2222/home/param?name=Me 
        we will get "Hello, Me".  
     
     @GET
@@ -51,8 +54,8 @@ public class Resource {
     public String paramMethod(@QueryParam("name") String name) {
         return "Hello, " + name;
     }
-    */
-    /* (3)There is another way to get values from the URI-path is to use the annotation @PathParam.
+
+    (3)There is another way to get values from the URI-path is to use the annotation @PathParam.
         we input this website for this methode: http://localhost:2222/home/path/Me
     
     @GET
@@ -61,40 +64,29 @@ public class Resource {
     public String pathMethod(@PathParam("var") String name) {
         return "Hello, " + name;     
     }
-    */
-  
-    MessageService messageService = new MessageService();
-    Test_property r = new Test_property();  
-    /*
+
     @GET
     @Produces(MediaType.APPLICATION_XML) //MediaType.APPLICATION_XML
     public List<Message> getMessages(){
         return messageService.getAllMessagges();
     }
-    
+
     @GET
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Message getMessage(@PathParam("messageId") long messageId){
         return messageService.getMessage(messageId);
     }
-
+*/
     @POST
+    @Path="message"
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
     public List<Message> addMessage(Message message){
         messageService.addMessage(message);
         return messageService.getAllMessagges();
-    }
-    */
-    
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    public void create(final String a){
-        System.out.println("author = " + a);
-        //System.out.println("message = " + input.getMessage());
-    }
-    
+    }   
+  /*  
     @PUT
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_XML)
@@ -110,18 +102,55 @@ public class Resource {
     public Message delectMessage(@PathParam("messageId") long messageId){
         return messageService.removeMessage(messageId);
     }
+    */
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String doGetBat(){
-             
+    public String doGetBat(){            
         //r.createProperties();        
         String filepath = r.readProperties();
         //System.out.println(filepath);
-        String result = r.runBatFile(filepath);
-                        
+        String result = r.runBatFile(filepath);                        
 	return result + " ! it works!!! ";      
    }
+    
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void create(final String a){
+        System.out.println("author = " + a);
+        //System.out.println("message = " + input.getMessage());
+    }
+
+
+    @GET
+    @Path("message")
+    @Produces(MediaType.APPLICATION_XML) //MediaType.APPLICATION_XML
+    public List<Message> getMessages(){
+        return messageService.getAllMessagges();
+    }
+    
+    @GET
+    @Path("getTest")
+    @Produces(MediaType.TEXT_PLAIN) //MediaType.APPLICATION_XML
+    public String returnGetRequest(){
+        return "12345";
+    }
+    
+    @POST
+    @Path("postTest")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String returnPostRequest(String str){
+        return "$POST works, str is "+str;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
     
     
