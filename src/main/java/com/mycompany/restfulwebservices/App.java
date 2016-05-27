@@ -1,5 +1,6 @@
 package com.mycompany.restfulwebservices;
 
+import Model.batchXmlBean;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -23,7 +24,7 @@ public class App {
         Server server = new Server(3333);
         ServletContextHandler context = new ServletContextHandler(server, "/*");
         context.addServlet(servlet, "/*");
-
+        
         try {
             server.start();
             server.join();

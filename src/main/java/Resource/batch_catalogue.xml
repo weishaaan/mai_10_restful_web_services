@@ -46,6 +46,21 @@ Spécification des batchs
             </PARAM>
         </INPUT>
     </BATCH>
+    
+    <BATCH>
+        <CODE>09T</CODE>
+        <NAME>Batch num 8 - extraction 8</NAME>
+        <DESCRIPTION>USA</DESCRIPTION>
+        <OUTPUT>Fichier xls</OUTPUT>
+        <INPUT>
+            <PARAM>
+                <!-- code Client -->
+                <PARAMNAME>codeClient</PARAMNAME>
+                <DEFAULTVALUE></DEFAULTVALUE>
+                <LABEL>Code client</LABEL>
+            </PARAM>
+        </INPUT>
+    </BATCH>
 
 
 </CATALOG>

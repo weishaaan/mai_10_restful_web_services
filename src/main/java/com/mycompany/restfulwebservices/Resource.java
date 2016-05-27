@@ -1,10 +1,13 @@
 package com.mycompany.restfulwebservices;
+import Model.Batch;
+import Model.BatchService;
 import Model.Test_property;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.List;
 import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
@@ -25,6 +28,7 @@ import static javax.ws.rs.client.Entity.json;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.jetty.server.Request;
 import static org.glassfish.jersey.server.model.Parameter.Source.PATH;
 
@@ -33,30 +37,15 @@ import static org.glassfish.jersey.server.model.Parameter.Source.PATH;
 public class Resource {
     
     MessageService messageService = new MessageService();   
+    BatchService batchService;
     Test_property r = new Test_property();  
+
+    public Resource() throws XmlException, IOException {
+        this.batchService = new BatchService();
+    }
     
     /*
-    @GET
-    @Path("hello")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String helloWorld() {
-       return "Hello, world!";
-    }    
     
-    @GET
-    @Path("param")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String paramMethod(@QueryParam("name") String name) {
-        return "Hello, " + name;
-    }
-
-    @GET
-    @Path("path/{var}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String pathMethod(@PathParam("var") String name) {
-        return "Hello, " + name;     
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_XML) //MediaType.APPLICATION_XML
     public List<Message> getMessages(){
@@ -80,14 +69,14 @@ public class Resource {
         message.setId(messageId);
         return messageService.updateMessage(message);
     }
-    */
+    
     @DELETE
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Message delectMessage(@PathParam("messageId") long messageId){
         return messageService.removeMessage(messageId);
     }
-    
+    */
 
     /***************************TEXT PLAIN**************************************/
     @GET
@@ -123,19 +112,21 @@ public class Resource {
         return Response.ok().entity(var)
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .header("Access-Control-Max-Age", "151200")
                 .allow("OPTIONS").build();
     }
     
     /*************************** JSON **************************************/
     @GET
-    @Path("{id}")
+    @Path("{code}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMessageById(@PathParam("id") Long id)throws IOException{
-        Message messageById = messageService.getMessage(id);
+    public Response getBatchByCode(@PathParam("code") String code)throws IOException, XmlException{
         return Response.ok() //200
-                .entity(messageById)
+                .entity(batchService.getBatch(code))
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .header("Access-Control-Max-Age", "151200")
+                .header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With")                 
                 .allow("OPTIONS").build();
     }
     
@@ -147,19 +138,38 @@ public class Resource {
                 .entity(messageService.getAllMessagges())
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With") 
+                .header("Access-Control-Max-Age", "151200")
+                .allow("OPTIONS").build();
+    }
+    
+    @GET
+    @Path("getBatch")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBatch() throws IOException{
+        return Response.ok() //200
+                .entity(batchService.getAllBatches())
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With") 
+                .header("Access-Control-Max-Age", "151200")
                 .allow("OPTIONS").build();
     }
     
     @POST
     @Path("postMessage")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postMessage(Message message) throws IOException{
         messageService.addMessage(message);
-        return Response.ok() //200
-                .entity(messageService.getAllMessagges())
+        //URI createdUri =null;
+        return Response.ok()
+                .entity("avavavfadvadfv")
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With") 
+                .header( "Access-Control-Max-Age", "1000" )
+                .header("Access-Control-Allow-Credentials", true)
                 .allow("OPTIONS").build();
     }
 }
